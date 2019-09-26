@@ -51,7 +51,6 @@ function extractPlaylistId(url: string): string | null {
 
 export default function Home({ history }: IHomeProps) {
   const goToPlaylist = (url: string) => {
-    console.log('playlist', url);
     const spotifyId = extractPlaylistId(url);
 
     if (!spotifyId) {

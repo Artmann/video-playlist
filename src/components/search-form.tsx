@@ -38,7 +38,7 @@ export default function SearchForm({ onSubmit }: ISearchFormProps) {
   const [ input, setInput ] = useState('');
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
-    console.log('se', input);
+
     onSubmit(input);
   };
 
