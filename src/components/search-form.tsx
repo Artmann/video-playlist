@@ -38,15 +38,15 @@ export default function SearchForm({ onSubmit }: ISearchFormProps) {
   const [ input, setInput ] = useState('');
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
-    console.log('SUBMUT', input);
+    console.log('se', input);
     onSubmit(input);
   };
 
   return (
-    <Form id="data-test-form" onSubmit={ submitHandler }>
+    <Form data-testid="search-form" onSubmit={ submitHandler }>
       <Input
         defaultValue={ input }
-        id="data-test-input"
+        data-testid="search-input"
         onChange={ event => setInput(event.currentTarget.value) }
         name=""
         placeholder="Enter Spotify Playlist Link Here"
