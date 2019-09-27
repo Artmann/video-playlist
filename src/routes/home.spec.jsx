@@ -24,4 +24,26 @@ describe('Home', () => {
 
     expect(history.push).toHaveBeenCalledWith('/playlist/7sSm6n8UZF2mTyzP2VNa1h');
   });
+
+  it('Does nothing for non Spotify URLs', () => {
+    const history = {
+      push: jest.fn()
+    };
+    const { getByTestId } = render(
+      <Home history={ history } />
+    );
+
+    const form = getByTestId('search-form');
+    const input = getByTestId('search-input');
+
+    fireEvent.change(input, {
+      target: {
+        value: 'https://google.com/search/123'
+      }
+    });
+
+    fireEvent.submit(form);
+
+    expect(history.push).not.toHaveBeenCalled();
+  });
 });
