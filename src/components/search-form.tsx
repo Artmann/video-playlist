@@ -49,7 +49,7 @@ export default function SearchForm({ onSubmit }: ISearchFormProps) {
         data-testid="search-input"
         onChange={ event => setInput(event.currentTarget.value) }
         name=""
-        placeholder="Enter Spotify Playlist Link Here"
+        placeholder="Paste the Spotify Playlist Link Here"
         type="text"
         />
     </Form>

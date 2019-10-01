@@ -1,13 +1,30 @@
-import { IPlaylist } from '../interfaces/playlist';
+import { IPlaylist, IPlaylistItem } from '../interfaces/playlist';
+import VideoService from './video-service';
 
 export default class PlaylistService {
 
   async createPlaylist(spotifyId: string): Promise<IPlaylist> {
-    const response = await fetch(`https://api.spotify.com/v1/playlists/${spotifyId}`);
-    const { name } = await response.json();
+    const accessToken = localStorage.getItem('token');
 
-    console.log(`Playlist: ${name}`);
+    const response = await fetch(`https://api.spotify.com/v1/playlists/${spotifyId}`, {
+      headers: new Headers({
+        'authorization': `Bearer ${accessToken}`
+      })
+    });
 
-    return {} as IPlaylist;
+    const { name, tracks } = await response.json();
+
+    const playlist = {
+      id: spotifyId,
+      items: tracks.items.map((item: any) => {
+        return  {
+          artists: item.track.artists.map((artist: any) => artist.name),
+          title: item.track.name
+        } as IPlaylistItem;
+      }),
+      name
+    };
+
+    return playlist;
   }
 }
