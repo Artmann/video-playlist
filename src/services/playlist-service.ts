@@ -1,5 +1,4 @@
 import { IPlaylist, IPlaylistItem } from '../interfaces/playlist';
-import VideoService from './video-service';
 
 export default class PlaylistService {
 

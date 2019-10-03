@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router';
-import PlaylistService from '../services/playlist-service';
+
 import { IPlaylist } from '../interfaces/playlist';
+import PlaylistService from '../services/playlist-service';
+import { RouteComponentProps } from 'react-router';
+import VideoPlayer from '../components/video-player';
 import VideoService from '../services/video-service';
-import PlaylistPlayer from '../components/video-player';
 
 interface IPlaylistProps extends RouteComponentProps<any> {}
 
@@ -16,37 +17,43 @@ export default function Playlist({ match }: IPlaylistProps) {
   const [ videoId, setVideoId ] = useState();
 
   useEffect(() => {
-    playlistService.createPlaylist('7sSm6n8UZF2mTyzP2VNa1h').then(pl => {
+    playlistService.createPlaylist('77CvWD8KR34XjZZppNJAWu').then(pl => {
       setPlaylist(pl);
     })
   }, [ match ]);
 
   if (!playlist) {
-    return (<div>
-      Loading...
-    </div>);
+    return (
+      <div>
+        Loading...
+      </div>
+    );
   }
 
-  const nextTrack = () => {
+  const playNextTrack = () => {
+    const nextIndex = trackIndex >= playlist.items.length - 1 ? 0 : trackIndex + 1;
 
-  }
+    console.log('Playing next track', nextIndex);
 
-  if (!videoId) {
-    const track = playlist.items[trackIndex];
+    setTrackIndex(nextIndex);
+  };
+  const track = playlist.items[trackIndex];
 
-    videoService.getVideoId(track.title, track.artists).then(id => {
-      if (!id) {
-        return nextTrack();
-      }
+  videoService.getVideoId(track.title, track.artists).then(id => {
+    if (!id) {
+      return playNextTrack();
+    }
 
-      setVideoId(id);
-    });
-  }
+    setVideoId(id);
+  });
+
+  const onVideoEnded = () => {
+    playNextTrack();
+  };
 
   console.log('VIDEO123', videoId);
 
-
   return (
-    <PlaylistPlayer videoId={videoId} />
+    <VideoPlayer onVideoEnded={ onVideoEnded } startsAt={ trackIndex === 0 ? 0 : 35 } videoId={ videoId } />
   );
 }
